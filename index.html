@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full scroll-pt-24">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indonesiaku — Bahasa Pemrograman Masa Depan by Fahril MOONSTAR</title>
+  <meta name="description" content="Indonesiaku — Bahasa pemrograman berbahasa Indonesia. Dikembangkan oleh Fahril MOONSTAR. Menulis kode dalam bahasa sendiri, menciptakan masa depan." />
+  <meta name="author" content="Fahril MOONSTAR" />
+  <meta name="color-scheme" content="dark only" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'cyber-black': '#05070F',
+            'cyber-dark': '#0F121F',
+            'cyber-card': '#13172B',
+            'cyber-border': '#2A2F4F',
+            'neon-blue': '#00F0FF',
+            'neon-purple': '#B026FF',
+            'neon-pink': '#FF2D78',
+            'neon-cyan': '#00E5FF',
+            'neon-violet': '#7928FF',
+            'neon-green': '#39FF14',
+            'cyber-text': '#E0E7FF',
+            'cyber-dim': '#8892B0',
+          },
+          fontFamily: {
+            sans: ['"Orbitron"', '"Rajdhani"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+            display: ['"Orbitron"', 'sans-serif'],
+          },
+          boxShadow: {
+            'neon-blue': '0 0 5px #00F0FF, 0 0 20px rgba(0, 240, 255, 0.3)',
+            'neon-purple': '0 0 5px #B026FF, 0 0 20px rgba(176, 38, 255, 0.3)',
+            'neon-pink': '0 0 5px #FF2D78, 0 0 20px rgba(255, 45, 120, 0.3)',
+            'neon-card': '0 0 15px rgba(0, 240, 255, 0.1), inset 0 0 30px rgba(176, 38, 255, 0.05)',
+            'glow-lift': '0 0 30px rgba(0, 240, 255, 0.15), 0 10px 40px rgba(0, 0, 0, 0.5)',
+          },
+          backgroundImage: {
+            'cyber-grid': "linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px)",
+            'cyber-radial': "radial-gradient(ellipse at top, rgba(176, 38, 255, 0.15), transparent 60%), radial-gradient(ellipse at bottom left, rgba(0, 240, 255, 0.1), transparent 60%)",
+          },
+          backgroundSize: {
+            'cyber-grid': '40px 40px',
+          },
+          animation: {
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'scan': 'scanLine 4s linear infinite',
+          },
+          keyframes: {
+            pulseGlow: {
+              '0%, 100%': { textShadow: '0 0 5px #00F0FF, 0 0 15px #00F0FF' },
+              '50%': { textShadow: '0 0 10px #00F0FF, 0 0 30px #00F0FF, 0 0 40px #B026FF' },
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            scanLine: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(100vh)' },
+            }
+          }
+        },
+      },
+    };
+  </script>
+
+  <!-- Font Cyberpunk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
+  <style>
+    :root { color-scheme: dark; }
+    html { background-color: #05070F; }
+    body {
+      background: linear-gradient(135deg, #05070F 0%, #0F121F 50%, #05070F 100%);
+      min-height: 100vh;
+    }
+
+    /* Cyberpunk Grid Background */
+    .cyber-bg {
+      background-image:
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%2300F0FF' stroke-opacity='0.05'%3E%3Cpath d='M60 0L0 0 0 60'/%3E%3C/g%3E%3C/svg%3E"),
+        linear-gradient(to bottom, #05070F, #0F121F);
+      background-size: 60px 60px, 100% 100%;
+      background-attachment: fixed;
+    }
+
+    /* Neon Text */
+    .neon-text {
+      text-shadow: 0 0 5px currentColor, 0 0 20px rgba(0, 240, 255, 0.4);
+    }
+
+    /* Glow Border */
+    .neon-border {
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      box-shadow: inset 0 0 10px rgba(0, 240, 255, 0.05), 0 0 10px rgba(0, 240, 255, 0.1);
+    }
+
+    /* Hover Glow */
+    .card-hover {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-hover::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.05), transparent);
+      transition: left 0.6s ease;
+    }
+    .card-hover:hover::before {
+      left: 100%;
+    }
+    .card-hover:hover {
+      border-color: rgba(0, 240, 255, 0.5);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15), 0 0 40px rgba(176, 38, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Scrollbar Cyberpunk */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0F121F; }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #00F0FF, #B026FF);
+      border-radius: 3px;
+    }
+
+    /* Selection */
+    ::selection {
+      background: rgba(0, 240, 255, 0.3);
+      color: #fff;
+    }
+
+    /* Code card */
+    .code-card {
+      background: linear-gradient(145deg, #0A0C18, #13172B);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 240, 255, 0.05);
+    }
+
+    /* Gradient text */
+    .text-gradient {
+      background: linear-gradient(135deg, #00F0FF, #B026FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* x-cloak */
+    [x-cloak] { display: none !important; }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(15px); transition: opacity .8s ease, transform .8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.is-visible { opacity: 1; transform: none; }
+    .reveal-1 { transition-delay: .1s; }
+    .reveal-2 { transition-delay: .2s; }
+    .reveal-3 { transition-delay: .3s; }
+    .reveal-4 { transition-delay: .4s; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+  </style>
+</head>
+
+<body x-data="shell" x-init="init()"
+      class="cyber-bg text-cyber-text antialiased">
+
+  <!-- Lewati ke konten -->
+  <a href="#utama"
+     class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-neon-blue focus:px-4 focus:py-2 focus:text-cyber-black font-bold">
+    Lewati ke konten
+  </a>
+
+  <div id="konten" class="relative">
+
+    <!-- ============================= NAVBAR ============================= -->
+    <header class="sticky top-0 z-50 border-b border-neon-blue/15 bg-cyber-black/80 backdrop-blur-xl">
+      <div class="mx-auto flex h-16 max-w-7xl items-center gap-1 px-5">
+        <!-- Logo -->
+        <a href="#beranda" class="mr-4 flex items-center gap-3 text-[15px] font-bold tracking-wider">
+          <span class="relative flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-neon-blue to-neon-purple text-cyber-black font-black text-sm shadow-neon-blue">
+            IM
+            <span class="absolute -top-1 -right-1 flex h-3 w-3">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-pink opacity-75"></span>
+              <span class="relative inline-flex h-3 w-3 rounded-full bg-neon-pink"></span>
+            </span>
+          </span>
+          <span class="tracking-tight">Indonesiaku<span class="text-neon-blue">.</span><span class="text-neon-purple">dev</span></span>
+        </a>
+
+        <nav class="hidden items-center gap-1 lg:flex" aria-label="Navigasi utama">
+          <a href="#beranda" class="rounded-lg px-3 py-2 text-sm font-semibold text-neon-blue/90 hover:bg-neon-blue/10" x-text="t('nav_home')">Beranda</a>
+          <a href="#tentang" class="rounded-lg px-3 py-2 text-sm font-medium text-cyber-dim transition hover:bg-neon-purple/10 hover:text-neon-purple" x-text="t('nav_about')">Tentang</a>
+          <a href="#penulis" class="rounded-lg px-3 py-2 text-sm font-medium text-cyber-dim transition hover:bg-neon-purple/10 hover:text-neon-purple" x-text="t('nav_author')">Penulis</a>
+          <a href="#dokumentasi" class="rounded-lg px-3 py-2 text-sm font-medium text-cyber-dim transition hover:bg-neon-purple/10 hover:text-neon-purple" x-text="t('nav_docs')">Dokumentasi</a>
+          <a href="#playground" class="rounded-lg px-3 py-2 text-sm font-medium text-cyber-dim transition hover:bg-neon-purple/10 hover:text-neon-purple" x-text="t('nav_playground')">Playground</a>
+        </nav>
+
+        <div class="ml-auto flex items-center gap-2">
+          <!-- Bahasa -->
+          <div class="hidden items-center rounded-full border border-neon-blue/20 p-0.5 sm:flex" role="group">
+            <button type="button" @click="setLang('id')" :aria-pressed="lang === 'id'"
+                    :class="lang === 'id' ? 'bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 text-neon-blue border-neon-blue/40' : 'text-cyber-dim hover:text-cyber-text'"
+                    class="rounded-full px-3 py-1 font-mono text-xs font-bold border border-transparent transition">ID</button>
+            <button type="button" @click="setLang('en')" :aria-pressed="lang === 'en'"
+                    :class="lang === 'en' ? 'bg-gradient-to-r from-neon-blue/20 to-neon-purple/20 text-neon-blue border-neon-blue/40' : 'text-cyber-dim hover:text-cyber-text'"
+                    class="rounded-full px-3 py-1 font-mono text-xs font-bold border border-transparent transition">EN</button>
+          </div>
+
+          <!-- GitHub -->
+          <a href="https://github.com/teguh02/Indonesiaku" target="_blank" rel="noopener"
+             class="hidden items-center gap-2 rounded-full border border-neon-purple/20 px-3 py-1.5 text-sm font-medium text-cyber-dim transition hover:border-neon-purple/50 hover:text-neon-purple md:flex">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z"/></svg>
+            GitHub
+          </a>
+
+          <!-- Mobile Menu -->
+          <button type="button" @click="menu = !menu" :aria-expanded="menu"
+                  class="grid h-9 w-9 place-items-center rounded-lg border border-neon-blue/20 text-cyber-dim lg:hidden">
+            <svg x-show="!menu" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            <svg x-show="menu" x-cloak class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Panel -->
+      <div x-show="menu" x-cloak x-transition.opacity.duration.200ms
+           class="border-t border-neon-blue/15 bg-cyber-dark/95 px-5 pb-4 backdrop-blur-lg lg:hidden">
+        <nav class="grid gap-1 pt-2">
+          <a href="#beranda" @click="menu=false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-neon-blue/90 bg-neon-blue/5">Beranda</a>
+          <a href="#tentang" @click="menu=false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-cyber-dim hover:bg-neon-purple/10 hover:text-neon-purple">Tentang</a>
+          <a href="#penulis" @click="menu=false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-cyber-dim hover:bg-neon-purple/10 hover:text-neon-purple">Penulis</a>
+          <a href="#dokumentasi" @click="menu=false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-cyber-dim hover:bg-neon-purple/10 hover:text-neon-purple">Dokumentasi</a>
+          <a href="#playground" @click="menu=false" class="rounded-lg px-3 py-2.5 text-sm font-medium text-cyber-dim hover:bg-neon-purple/10 hover:text-neon-purple">Playground</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="utama">
+
+      <!-- ============================= HERO ============================= -->
+      <section id="beranda" class="relative overflow-hidden py-20 lg:py-28">
+        <div class="pointer-events-none absolute inset-0 overflow-hidden">
+          <div class="absolute top-20 -right-20 h-96 w-96 rounded-full bg-neon-purple/10 blur-3xl animate-float"></div>
+          <div class="absolute bottom-0 -left-20 h-80 w-80 rounded-full bg-neon-blue/10 blur-3xl animate-float" style="animation-delay: -3s"></div>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-neon-blue/5"></div>
+        </div>
+
+        <div class="relative mx-auto max-w-7xl px-5">
+          <div class="grid items-center gap-12 lg:grid-cols-12">
+
+            <div class="lg:col-span-6">
+              <p class="reveal font-mono text-xs tracking-widest text-neon-blue/70" x-text="t('hero_eyebrow')">◆ BAHASA PEMROGRAMAN INDONESIA · v0.4.0</p>
+
+              <h1 class="reveal reveal-1 mt-6 text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                <span class="block">Menulis kode</span>
+                <span class="text-gradient font-extrabold">dalam Bahasa Indonesia</span>
+              </h1>
+
+              <p class="reveal reveal-2 mt-6 text-lg leading-relaxed text-cyber-dim max-w-xl">
+                Bahasa pemrograman berbasis bytecode VM dengan sintaks Bahasa Indonesia. Tulis fungsi, kelas, JSON, dan HTTP dengan kata kunci yang langsung terbaca — <span class="text-neon-cyan">diciptakan oleh Fahril MOONSTAR</span>.
+              </p>
+
+              <div class="reveal reveal-3 mt-8 flex flex-wrap gap-4">
+                <a href="#dokumentasi" class="group relative inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-neon-blue to-neon-purple px-6 py-3 font-semibold text-cyber-black shadow-neon-blue transition hover:shadow-neon-purple">
+                  <span x-text="t('hero_cta_docs')">Mulai Sekarang</span>
+                  <svg class="h-4 w-4 transition-transform group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+                <a href="https://github.com/teguh02/Indonesiaku/tree/main/examples" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-lg border border-neon-purple/40 bg-neon-purple/5 px-6 py-3 font-medium text-neon-purple transition hover:bg-neon-purple/10 hover:border-neon-purple/60">
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l11-6.86a1 1 0 0 0 0-1.7l-11-6.86A1 1 0 0 0 8 5.14Z"/></svg>
+                  <span x-text="t('hero_cta_playground')">Lihat Contoh</span>
+                </a>
+              </div>
+
+              <dl class="reveal reveal-4 mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6">
+                <div class="space-y-1">
+                  <dt class="font-mono text-2xl font-bold text-neon-blue">49</dt>
+                  <dd class="text-xs text-cyber-dim" x-text="t('stat_examples')">Contoh Program</dd>
+                </div>
+                <div class="space-y-1">
+                  <dt class="font-mono text-2xl font-bold text-neon-purple">6</dt>
+                  <dd class="text-xs text-cyber-dim" x-text="t('stat_std')">Pustaka Standar</dd>
+                </div>
+                <div class="space-y-1">
+                  <dt class="font-mono text-2xl font-bold text-neon-pink">3</dt>
+                  <dd class="text-xs text-cyber-dim" x-text="t('stat_platforms')">Platform CI</dd>
+                </div>
+                <div class="space-y-1">
+                  <dt class="font-mono text-2xl font-bold text-neon-cyan">12<span class="text-sm">MB</span></dt>
+                  <dd class="text-xs text-cyber-dim" x-text="t('stat_image')">Image Docker</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div class="reveal reveal-2 lg:col-span-6 lg:pl-6">
+              <div class="code-card rounded-xl overflow-hidden shadow-glow-lift">
+                <div class="flex items-center gap-2 border-b border-neon-blue/15 bg-neon-blue/5 px-4 py-3">
+                  <span class="h-2.5 w-2.5 rounded-full bg-neon-pink/80"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-neon-cyan/80"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-neon-purple/80"></span>
+                  <span class="ml-3 font-mono text-xs text-cyber-dim">halo.idk</span>
+                  <span class="ml-auto font-mono text-xs text-neon-blue/60">indk 0.4.0</span>
+                </div>
+                <pre class="p-5 overflow-x-auto text-sm leading-relaxed"><code><span class="text-neon-pink font-semibold">fungsi</span> <span class="text-neon-cyan">sapa</span>(<span class="text-cyber-text">nama</span>) <span class="text-neon-purple">{</span>
+    <span class="text-neon-cyan">cetak</span>(<span class="text-neon-green">"Halo,"</span>, nama)
+<span class="text-neon-purple">}</span>
+
+<span class="text-neon-pink">untuk</span> orang <span class="text-neon-pink">dalam</span> [
+    <span class="text-neon-green">"Budi"</span>, <span class="text-neon-green">"Ani"</span>, <span class="text-neon-green">"Citra"</span>
+] <span class="text-neon-purple">{</span>
+    <span class="text-neon-cyan">sapa</span>(orang)
+<span class="text-neon-purple">}</span></code></pre>
+                <div class="border-t border-neon-blue/15 bg-neon-blue/5 px-5 py-3">
+                  <div class="font-mono text-xs text-cyber-dim"><span class="text-neon-blue">$</span> indk halo.idk</div>
+                  <div class="mt-1 font-mono text-sm text-cyber-text/85">Halo, Budi<br>Halo, Ani<br>Halo, Citra</div>
+                </div>
+              </div>
+              <p class="mt-4 text-center text-xs text-cyber-dim" x-text="t('hero_terminal_note')">Dijalankan langsung oleh interpreter asli — dikembangkan oleh Fahril MOONSTAR</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= FITUR ============================= -->
+      <section id="fitur" class="py-20 border-y border-neon-blue/10">
+        <div class="mx-auto max-w-7xl px-5">
+          <div class="max-w-2xl">
+            <p class="font-mono text-xs tracking-widest text-neon-blue/70">◆ 01 — FITUR UNGGULAN</p>
+            <h2 class="mt-3 text-3xl font-bold">Fitur Lengkap, <span class="text-gradient">Sintaks yang Akrab</span></h2>
+            <p class="mt-2 text-cyber-dim">Bukan sekadar pengganti kata kunci — bahasa yang utuh dan modern.</p>
+          </div>
+
+          <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <article class="card-hover rounded-xl border border-neon-blue/10 bg-cyber-card/40 p-6 transition-all">
+              <span class="font-mono text-xs font-bold text-neon-blue">01</span>
+              <h3 class="mt-3 text-lg font-semibold text-cyber-text">Kata Kunci Indonesia</h3>
+              <p class="mt-2 text-sm text-cyber-dim">jika, selagi, fungsi, kelas, cetak — semua dalam bahasamu.</p>
+            </article>
+            <article class="card-hover rounded-xl border border-neon-blue/10 bg-cyber-card/40 p-6 transition-all">
+              <span class="font-mono text-xs font-bold text-neon-purple">02</span>
+              <h3 class="mt-3 text-lg font-semibold text-cyber-text">Closure &amp; Kelas</h3>
+              <p class="mt-2 text-sm text-cyber-dim">Fungsi kelas-satu, pewarisan, dan metode — lengkap dan konsisten.</p>
+            </article>
+            <article class="card-hover rounded-xl border border-neon-blue/10 bg-cyber-card/40 p-6 transition-all">
+              <span class="font-mono text-xs font-bold text-neon-pink">03</span>
+              <h3 class="mt-3 text-lg font-semibold text-cyber-text">Garbage Collector</h3>
+              <p class="mt-2 text-sm text-cyber-dim">Manajemen memori otomatis mark-sweep yang efisien.</p>
+            </article>
+            <article class="card-hover rounded-xl border border-neon-blue/10 bg-cyber-card/40 p-6 transition-all">
+              <span class="font-mono text-xs font-bold text-neon-cyan">04</span>
+              <h3 class="mt-3 text-lg font-semibold text-cyber-text">JSON &amp; REST API</h3>
+              <p class="mt-2 text-sm text-cyber-dim">Pustaka bawaan untuk memproses data dan berkomunikasi lewat HTTP.</p>
+            </article>
+            <article class="card-hover rounded-xl border border-neon-blue/10 bg-cyber-card/40 p-6 transition-all">
+              <span class="font-mono text-xs font-bold text-neon-violet">05</span>
+              <h3 class="mt-3 text-lg font-semibold text-cyber-text">Pustaka Standar</h3>
+              <p class="mt-2 text-sm text-cyber-dim">Modul teks, daftar, matematika, sistem file, dan banyak lagi.</p>
+            </article>
+            <article class="card-hover rounded-xl border border-neon-blue/10 bg-cyber-card/40 p-6 transition-all">
+              <span class="font-mono text-xs font-bold text-neon-green">06</span>
+              <h3 class="mt-3 text-lg font-semibold text-cyber-text">Ringan &amp; Portabel</h3>
+              <p class="mt-2 text-sm text-cyber-dim">Satu binary C11, berjalan di mana saja — dari laptop hingga server.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= KODE ============================= -->
+      <section id="dokumentasi" class="py-20">
+        <div class="mx-auto max-w-7xl px-5">
+          <div class="grid gap-12 lg:grid-cols-12">
+            <div class="lg:col-span-5">
+              <p class="font-mono text-xs tracking-widest text-neon-blue/70">◆ 02 — SEKILAS KODE</p>
+              <h2 class="mt-3 text-3xl font-bold">Kelas, Warisan &amp; <span class="text-gradient">Error Handling</span></h2>
+              <p class="mt-4 text-cyber-dim">Sintaks yang konsisten dan mudah dipahami.</p>
+
+              <ul class="mt-8 space-y-4">
+                <li class="flex gap-3 items-start">
+                  <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-neon-blue/40 font-mono text-xs text-neon-blue">1</span>
+                  <span class="text-sm">Gunakan <code class="text-neon-cyan">init</code> sebagai konstruktor kelas.</span>
+                </li>
+                <li class="flex gap-3 items-start">
+                  <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-neon-purple/40 font-mono text-xs text-neon-purple">2</span>
+                  <span class="text-sm">Pewarisan memakai tanda <code class="text-neon-cyan">&lt;</code>.</span>
+                </li>
+                <li class="flex gap-3 items-start">
+                  <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-neon-pink/40 font-mono text-xs text-neon-pink">3</span>
+                  <span class="text-sm">Penanganan error dengan <code class="text-neon-cyan">coba/kecuali</code> dan <code class="text-neon-cyan">naikkan</code>.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="lg:col-span-7">
+              <div class="code-card rounded-xl overflow-hidden">
+                <div class="flex items-center gap-2 border-b border-neon-blue/15 bg-neon-blue/5 px-4 py-3">
+                  <span class="h-2.5 w-2.5 rounded-full bg-neon-pink/80"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-neon-cyan/80"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-neon-purple/80"></span>
+                  <span class="ml-2 font-mono text-xs text-cyber-dim">kelas.idk</span>
+                </div>
+<pre class="p-5 overflow-x-auto text-sm leading-relaxed"><code><span class="text-neon-pink font-semibold">kelas</span> <span class="text-neon-cyan">Hewan</span> <span class="text-neon-purple">{</span>
+    <span class="text-neon-pink">init</span>(nama, suara) <span class="text-neon-purple">{</span>
+        <span class="text-neon-pink">diri</span>.nama = nama
+        <span class="text-neon-pink">diri</span>.suara = suara
+    <span class="text-neon-purple">}</span>
+
+    <span class="text-neon-cyan">bersuara</span>() <span class="text-neon-purple">{</span>
+        <span class="text-neon-cyan">cetak</span>(
+            <span class="text-neon-pink">diri</span>.nama, <span class="text-neon-green">"berkata:"</span>,
+            <span class="text-neon-pink">diri</span>.suara
+        )
+    <span class="text-neon-purple">}</span>
+<span class="text-neon-purple">}</span>
+
+<span class="text-gray-500"># Pewarisan dan konstruktor turunan</span>
+<span class="text-neon-pink">kelas</span> <span class="text-neon-cyan">Anjing</span> <span class="text-neon-cyan">&lt;</span> <span class="text-neon-cyan">Hewan</span> <span class="text-neon-purple">{</span>
+    <span class="text-neon-pink">init</span>(nama) <span class="text-neon-purple">{</span>
+        <span class="text-neon-pink">super</span>.<span class="text-neon-cyan">init</span>(nama, <span class="text-neon-green">"Guk"</span>)
+    <span class="text-neon-purple">}</span>
+<span class="text-neon-purple">}</span>
+
+<span class="text-neon-pink">coba</span> <span class="text-neon-purple">{</span>
+    <span class="text-neon-cyan">Anjing</span>(<span class="text-neon-green">"Rex"</span>).<span class="text-neon-cyan">bersuara</span>()
+<span class="text-neon-purple">}</span> <span class="text-neon-pink">kecuali</span> e <span class="text-neon-purple">{</span>
+    <span class="text-neon-cyan">cetak</span>(<span class="text-neon-green">"gagal:"</span>, e)
+<span class="text-neon-purple">}</span></code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= MULAI CEPAT ============================= -->
+      <section id="playground" class="py-20 border-y border-neon-blue/10">
+        <div class="mx-auto max-w-7xl px-5">
+          <div class="max-w-2xl">
+            <p class="font-mono text-xs tracking-widest text-neon-blue/70">◆ 03 — MULAI CEPAT</p>
+            <h2 class="mt-3 text-3xl font-bold">Tiga Langkah, <span class="text-gradient">Tanpa Setup Rumit</span></h2>
+            <p class="mt-2 text-cyber-dim">Pilih cara yang paling nyaman untuk memulai.</p>
+          </div>
+
+          <div class="mt-12 grid gap-6 lg:grid-cols-3">
+            <!-- Docker -->
+            <div class="card-hover rounded-xl border border-neon-blue/10 bg-cyber-card/40 p-6">
+              <span class="font-mono text-xs font-bold text-neon-blue">01</span>
+              <h3 class="mt-2 text-lg font-semibold">Jalankan dengan Docker</h3>
+              <p class="mt-2 text-sm text-cyber-dim">Semua sudah di dalam image — tinggal jalankan.</p>
+              <div class="mt-4 rounded-lg bg-cyber-black/80 border border-neon-blue/10 p-3 flex items-center gap-2">
+                <code class="flex-1 overflow-x-auto font-mono text-xs text-neon-cyan">docker run --rm -it teguh02/indonesiaku</code>
+                <button @click="salin($el.previousElementSibling, $el)" class="shrink-0 rounded px-2 py-1 text-xs text-cyber-dim hover:text-neon-blue transition">salin</button>
+              </div>
+            </div>
+
+            <!-- Build dari Sumber -->
+            <div class="card-hover rounded-xl border border-neon-purple/10 bg-cyber-card/40 p-6">
+              <span class="font-mono text-xs font-bold text-neon-purple">02</span>
+              <h3 class="mt-2 text-lg font-semibold">Build dari Sumber</h3>
+              <p class="mt-2 text-sm text-cyber-dim">Hanya butuh compiler C11.</p>
+              <div class="mt-4 rounded-lg bg-cyber-black/80 border border-neon-purple/10 p-3 flex items-center gap-2">
+                <code class="flex-1 overflow-x-auto font-mono text-xs text-neon-cyan">make && ./indk examples/hello.idk</code>
+                <button @click="salin($el.previousElementSibling, $el)" class="shrink-0 rounded px-2 py-1 text-xs text-cyber-dim hover:text-neon-purple transition">salin</button>
+              </div>
+            </div>
+
+            <!-- Coba di Browser -->
+            <div class="card-hover rounded-xl border border-neon-pink/10 bg-cyber-card/40 p-6">
+              <span class="font-mono text-xs font-bold text-neon-pink">03</span>
+              <h3 class="mt-2 text-lg font-semibold">Coba di Browser</h3>
+              <p class="mt-2 text-sm text-cyber-dim">Tanpa instalasi, langsung lihat contoh.</p>
+              <a href="https://github.com/teguh02/Indonesiaku/tree/main/examples" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-neon-pink to-neon-purple px-4 py-2 text-sm font-medium text-white shadow-neon-pink">
+                Lihat di GitHub
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= APLIKASI NYATA ============================= -->
+      <section class="py-20">
+        <div class="mx-auto max-w-7xl px-5">
+          <div class="flex flex-wrap items-end justify-between gap-6">
+            <div>
+              <p class="font-mono text-xs tracking-widest text-neon-blue/70">◆ 04 — APLIKASI NYATA</p>
+              <h2 class="mt-3 text-3xl font-bold">Bukan Hanya Contoh Mainan</h2>
+              <p class="mt-2 text-cyber-dim max-w-xl">Dua aplikasi lengkap yang siap dipakai.</p>
+            </div>
+            <a href="https://github.com/teguh02/Indonesiaku/tree/main/examples" target="_blank" rel="noopener" class="text-neon-cyan hover:text-neon-blue transition">Lihat semua contoh →</a>
+          </div>
+
+          <div class="mt-10 grid gap-6 lg:grid-cols-2">
+            <!-- CLI App -->
+            <article class="card-hover rounded-xl border border-neon-blue/10 bg-cyber-card/40 p-7">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="rounded-full bg-neon-blue/10 px-2 py-1 font-mono text-xs font-bold text-neon-blue">CLI</span>
+                <h3 class="text-lg font-semibold">Todo-list CLI + JSON</h3>
+              </div>
+              <p class="text-sm text-cyber-dim mb-4">Aplikasi daftar tugas berbasis command line dengan penyimpanan file JSON.</p>
+              <div class="rounded-lg bg-cyber-black/80 border border-neon-blue/10 p-4">
+                <pre class="font-mono text-xs leading-relaxed text-neon-cyan/90"><code>indk examples/todo_cli.idk tambah "beli susu"
+indk examples/todo_cli.idk daftar
+indk examples/todo_cli.idk selesai 1</code></pre>
+              </div>
+            </article>
+
+            <!-- HTTP Server -->
+            <article class="card-hover rounded-xl border border-neon-purple/10 bg-cyber-card/40 p-7">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="rounded-full bg-neon-purple/10 px-2 py-1 font-mono text-xs font-bold text-neon-purple">HTTP</span>
+                <h3 class="text-lg font-semibold">Server REST HTTP</h3>
+              </div>
+              <p class="text-sm text-cyber-dim mb-4">Server web lengkap dengan rute GET, POST, PUT, dan DELETE.</p>
+              <div class="rounded-lg bg-cyber-black/80 border border-neon-purple/10 p-4">
+                <pre class="font-mono text-xs leading-relaxed text-neon-cyan/90"><code>indk examples/todo_server.idk 8080
+
+curl -X POST -d '{"teks":"beli susu"}' \
+  http://127.0.0.1:8080/todos</code></pre>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= CTA ============================= -->
+      <section class="py-20">
+        <div class="mx-auto max-w-4xl px-5">
+          <div class="relative rounded-2xl border border-neon-purple/30 bg-gradient-to-br from-neon-purple/10 via-neon-blue/5 to-neon-pink/10 p-10 text-center overflow-hidden">
+            <div class="pointer-events-none absolute inset-0 bg-cyber-grid bg-[length:40px_40px] opacity-30"></div>
+            <div class="relative">
+              <h2 class="text-3xl font-bold mb-4">Siap Menulis Program Pertamamu?</h2>
+              <p class="text-cyber-dim max-w-lg mx-auto mb-8">Dokumentasi lengkap berbahasa Indonesia, contoh kode yang siap dijalankan, dan komunitas yang ramah.</p>
+              <div class="flex flex-wrap justify-center gap-4">
+                <a href="#dokumentasi" class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-neon-blue to-neon-purple px-6 py-3 font-semibold text-cyber-black shadow-neon-blue hover:shadow-neon-purple transition">
+                  Baca Dokumentasi
+                  <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+                <a href="#penulis" class="inline-flex items-center gap-2 rounded-lg border border-neon-purple/40 bg-neon-purple/5 px-6 py-3 font-medium text-neon-purple hover:bg-neon-purple/10 transition">
+                  Tentang Proyek
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============================= FOOTER ============================= -->
+    <footer id="penulis" class="border-t border-neon-blue/10 py-16">
+      <div class="mx-auto max-w-7xl px-5">
+        <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
+          <!-- Brand -->
+          <div class="lg:col-span-5">
+            <a href="#beranda" class="inline-flex items-center gap-3 text-xl font-bold tracking-tight mb-4">
+              <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-neon-blue to-neon-purple text-cyber-black font-black">IM</span>
+              <span>Indonesiaku<span class="text-neon-blue">.</span><span class="text-neon-purple">dev</span></span>
+            </a>
+            <p class="text-sm text-cyber-dim mb-4">Bahasa pemrograman dengan sintaks Bahasa Indonesia — menciptakan masa depan teknologi dengan bahasamu sendiri.</p>
+            <p class="text-sm font-semibold text-cyber-text mb-1">Fahril MOONSTAR</p>
+            <p class="text-xs text-cyber-dim mb-4">Pencipta &amp; Pengembang Utama</p>
+            <div class="flex items-center gap-3">
+              <a href="https://github.com/teguh02/Indonesiaku" target="_blank" rel="noopener"
+                 class="flex h-9 w-9 items-center justify-center rounded-lg border border-neon-blue/20 text-cyber-dim transition hover:border-neon-blue/50 hover:text-neon-blue"
+                 aria-label="GitHub">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.6 18.3 5 18.3 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5Z"/></svg>
+              </a>
+              <a href="https://github.com/teguh02" target="_blank" rel="noopener"
+                 class="flex h-9 w-9 items-center justify-center rounded-lg border border-neon-purple/20 text-cyber-dim transition hover:border-neon-purple/50 hover:text-neon-purple"
+                 aria-label="Profil GitHub Fahril">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Navigasi -->
+          <div class="lg:col-span-2">
+            <h3 class="font-mono text-xs font-bold tracking-widest text-neon-blue/70 mb-4">◆ NAVIGASI</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#beranda" class="text-cyber-dim hover:text-neon-blue transition">Beranda</a></li>
+              <li><a href="#fitur" class="text-cyber-dim hover:text-neon-blue transition">Fitur</a></li>
+              <li><a href="#dokumentasi" class="text-cyber-dim hover:text-neon-blue transition">Dokumentasi</a></li>
+              <li><a href="#playground" class="text-cyber-dim hover:text-neon-blue transition">Mulai Cepat</a></li>
+            </ul>
+          </div>
+
+          <!-- Sumber Daya -->
+          <div class="lg:col-span-2">
+            <h3 class="font-mono text-xs font-bold tracking-widest text-neon-purple/70 mb-4">◆ SUMBER DAYA</h3>
+            <ul class="space-y-2 text-sm">
+              <li><a href="https://github.com/teguh02/Indonesiaku" target="_blank" rel="noopener" class="text-cyber-dim hover:text-neon-purple transition">Repositori</a></li>
+              <li><a href="https://github.com/teguh02/Indonesiaku/tree/main/examples" target="_blank" rel="noopener" class="text-cyber-dim hover:text-neon-purple transition">Contoh Kode</a></li>
+              <li><a href="https://github.com/teguh02/Indonesiaku/tree/main/docs" target="_blank" rel="noopener" class="text-cyber-dim hover:text-neon-purple transition">Dokumentasi</a></li>
+              <li><a href="https://hub.docker.com/r/teguh02/indonesiaku" target="_blank" rel="noopener" class="text-cyber-dim hover:text-neon-purple transition">Docker Hub</a></li>
+            </ul>
+          </div>
+
+          <!-- Info -->
+          <div class="lg:col-span-3">
+            <h3 class="font-mono text-xs font-bold tracking-widest text-neon-pink/70 mb-4">◆ TENTANG</h3>
+            <ul class="space-y-2 text-sm text-cyber-dim">
+              <li>Versi <span class="font-mono text-neon-cyan">0.4.0</span></li>
+              <li>Lisensi MIT</li>
+              <li>Ditulis dalam C11</li>
+              <li class="flex items-center gap-2">
+                <span class="relative flex h-2 w-2">
+                  <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon-green opacity-75"></span>
+                  <span class="relative inline-flex h-2 w-2 rounded-full bg-neon-green"></span>
+                </span>
+                Aktif dikembangkan
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-neon-blue/10 pt-6 sm:flex-row">
+          <p class="text-xs text-cyber-dim">© 2024–2025 Indonesiaku. Dikembangkan oleh <span class="text-neon-cyan">Fahril MOONSTAR</span>.</p>
+          <p class="font-mono text-xs text-cyber-dim">Dibuat dengan <span class="text-neon-pink">♥</span> di Indonesia</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ============================= SCROLL TO TOP ============================= -->
+    <button type="button" @click="window.scrollTo({top:0,behavior:'smooth'})"
+            x-show="showTop" x-transition.opacity x-cloak
+            class="fixed bottom-6 right-6 z-40 grid h-11 w-11 place-items-center rounded-full border border-neon-blue/30 bg-cyber-card/90 text-neon-blue shadow-neon-blue backdrop-blur transition hover:border-neon-blue/60 hover:bg-cyber-dark"
+            aria-label="Kembali ke atas">
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+    </button>
+
+  </div><!-- /#konten -->
+
+  <!-- ============================= SCRIPT ALPINE ============================= -->
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('shell', () => ({
+        // ==== State ====
+        lang: 'id',
+        menu: false,
+        showTop: false,
+
+        // ==== Kamus Terjemahan ====
+        dict: {
+          id: {
+            nav_home: 'Beranda',
+            nav_about: 'Tentang',
+            nav_author: 'Penulis',
+            nav_docs: 'Dokumentasi',
+            nav_playground: 'Playground',
+            hero_eyebrow: '◆ BAHASA PEMROGRAMAN INDONESIA · v0.4.0',
+            hero_cta_docs: 'Mulai Sekarang',
+            hero_cta_playground: 'Lihat Contoh',
+            hero_terminal_note: 'Dijalankan langsung oleh interpreter asli — dikembangkan oleh Fahril MOONSTAR',
+            stat_examples: 'Contoh Program',
+            stat_std: 'Pustaka Standar',
+            stat_platforms: 'Platform CI',
+            stat_image: 'Image Docker',
+          },
+          en: {
+            nav_home: 'Home',
+            nav_about: 'About',
+            nav_author: 'Author',
+            nav_docs: 'Documentation',
+            nav_playground: 'Playground',
+            hero_eyebrow: '◆ INDONESIAN PROGRAMMING LANGUAGE · v0.4.0',
+            hero_cta_docs: 'Get Started',
+            hero_cta_playground: 'See Examples',
+            hero_terminal_note: 'Run directly by the native interpreter — built by Fahril MOONSTAR',
+            stat_examples: 'Example Programs',
+            stat_std: 'Standard Libraries',
+            stat_platforms: 'CI Platforms',
+            stat_image: 'Docker Image',
+          }
+        },
+
+        // ==== Helper ====
+        t(key) {
+          return (this.dict[this.lang] && this.dict[this.lang][key]) || key;
+        },
+
+        setLang(code) {
+          this.lang = code;
+          try { localStorage.setItem('im_lang', code); } catch (e) {}
+          document.documentElement.setAttribute('lang', code);
+        },
+
+        init() {
+          // Muat bahasa tersimpan
+          try {
+            const saved = localStorage.getItem('im_lang');
+            if (saved === 'id' || saved === 'en') {
+              this.lang = saved;
+            } else {
+              const nav = (navigator.language || 'id').slice(0, 2).toLowerCase();
+              this.lang = nav === 'en' ? 'en' : 'id';
+            }
+          } catch (e) {}
+          document.documentElement.setAttribute('lang', this.lang);
+
+          // Pantau scroll untuk tombol "kembali ke atas"
+          const onScroll = () => {
+            this.showTop = window.scrollY > 400;
+          };
+          onScroll();
+          window.addEventListener('scroll', onScroll, { passive: true });
+
+          // Tutup menu mobile saat resize ke desktop
+          window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) this.menu = false;
+          });
+
+          // ==== Reveal on scroll ====
+          const revealEls = document.querySelectorAll('.reveal');
+          if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const io = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-visible');
+                  io.unobserve(entry.target);
+                }
+              });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            revealEls.forEach((el) => io.observe(el));
+          } else {
+            revealEls.forEach((el) => el.classList.add('is-visible'));
+          }
+        },
+
+        // ==== Salin ke clipboard ====
+        async salin(codeEl, btnEl) {
+          if (!codeEl) return;
+          const text = codeEl.textContent || '';
+          const original = btnEl ? btnEl.textContent : 'salin';
+          try {
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(text);
+            } else {
+              const ta = document.createElement('textarea');
+              ta.value = text;
+              ta.style.position = 'fixed';
+              ta.style.opacity = '0';
+              document.body.appendChild(ta);
+              ta.select();
+              document.execCommand('copy');
+              document.body.removeChild(ta);
+            }
+            if (btnEl) {
+              btnEl.textContent = '✓ tersalin';
+              btnEl.classList.add('text-neon-blue');
+              setTimeout(() => {
+                btnEl.textContent = original;
+                btnEl.classList.remove('text-neon-blue');
+              }, 1500);
+            }
+          } catch (err) {
+            console.error('Gagal menyalin:', err);
+            if (btnEl) {
+              btnEl.textContent = '✗ gagal';
+              setTimeout(() => { btnEl.textContent = original; }, 1500);
+            }
+          }
+        },
+      }));
+    });
+  </script>
+
+  <!-- Fallback apabila Alpine.js gagal dimuat -->
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (!window.Alpine) {
+          document.querySelectorAll('[x-cloak]').forEach((el) => el.removeAttribute('x-cloak'));
+          console.warn('Alpine.js tidak termuat — interaktivitas dinonaktifkan.');
+        }
+      }, 1200);
+    });
+  </script>
+
+</body>
+</html>
